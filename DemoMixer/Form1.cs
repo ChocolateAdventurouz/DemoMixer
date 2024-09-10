@@ -10,6 +10,12 @@ namespace DemoMixer
         string selectedFile;
         int counter;
 
+        public int crossfadeTimeInMs;
+        public int fadeNextTimeInMs;
+        //public int pauseFadeTimeInMs;
+        public int stopFadeTimeInMs;
+
+        public bool repeat;
         Queue<string> strings = new Queue<string>();
         public Form1()
         {
@@ -19,6 +25,11 @@ namespace DemoMixer
 
                 MessageBox.Show(Bass.BASS_ErrorGetCode().ToString());
             }
+
+            crossfadeTimeInMs = (int)numericUpDown2.Value * 1000;
+            fadeNextTimeInMs = (int)numericUpDown3.Value * 1000;
+            //pauseFadeTimeInMs = (int)numericUpDown1.Value * 1000;
+            stopFadeTimeInMs = (int)numericUpDown4.Value * 1000;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -47,22 +58,26 @@ namespace DemoMixer
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (checkBox1.Checked) { repeat = true; }
+            else { repeat = false; }
+
             stream = Bass.BASS_StreamCreateFile(listBox1.Items[0].ToString(), 0, 0, BASSFlag.BASS_STREAM_AUTOFREE);
-            Bass.BASS_ChannelPlay(stream, false);
+
+            Bass.BASS_ChannelPlay(stream, repeat);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0, 1500);
+            Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0, stopFadeTimeInMs);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0, 1500);
+            Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0, fadeNextTimeInMs);
             stream = Bass.BASS_StreamCreateFile(listBox1.Items[1].ToString(), 0, 0, BASSFlag.BASS_STREAM_AUTOFREE);
             Bass.BASS_ChannelSetAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0);
             Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 1, 1500);
-            Bass.BASS_ChannelPlay(stream, false);
+            Bass.BASS_ChannelPlay(stream, repeat);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -76,6 +91,31 @@ namespace DemoMixer
                 Bass.BASS_ChannelPlay(stream, false);
             }
 
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            //pauseFadeTimeInMs = (int)numericUpDown1.Value * 1000;
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            crossfadeTimeInMs = (int)numericUpDown2.Value * 1000;
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            fadeNextTimeInMs = (int)numericUpDown3.Value * 1000;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            repeat = (bool)checkBox1.Checked;
+        }
+
+        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
+        {
+            stopFadeTimeInMs = (int)numericUpDown4.Value * 1000;
         }
     }
 }
