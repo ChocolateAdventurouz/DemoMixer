@@ -20,11 +20,6 @@ namespace DemoMixer
         public Form1()
         {
             InitializeComponent();
-            if (!Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_STEREO, nint.Zero)) ;
-            {
-
-                MessageBox.Show(Bass.BASS_ErrorGetCode().ToString());
-            }
 
             crossfadeTimeInMs = (int)numericUpDown2.Value * 1000;
             fadeNextTimeInMs = (int)numericUpDown3.Value * 1000;
@@ -58,12 +53,7 @@ namespace DemoMixer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (checkBox1.Checked) { repeat = true; }
-            else { repeat = false; }
-
-            stream = Bass.BASS_StreamCreateFile(listBox1.Items[0].ToString(), 0, 0, BASSFlag.BASS_STREAM_AUTOFREE);
-
-            Bass.BASS_ChannelPlay(stream, repeat);
+            Task.Run(() => Play());
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -71,13 +61,60 @@ namespace DemoMixer
             Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0, stopFadeTimeInMs);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        public static int GetRemainingMilliseconds(int channel)
+        {
+            // Get the total length in bytes and convert to seconds
+            long length = Bass.BASS_ChannelGetLength(channel);
+            double totalSeconds = Bass.BASS_ChannelBytes2Seconds(channel, length);
+
+            // Get the current position in bytes and convert to seconds
+            long position = Bass.BASS_ChannelGetPosition(channel);
+            double currentSeconds = Bass.BASS_ChannelBytes2Seconds(channel, position);
+
+            // Calculate remaining time in milliseconds and round to an integer
+            double remainingSeconds = totalSeconds - currentSeconds;
+            return (int)(remainingSeconds * 1000); // Convert seconds to milliseconds and cast to int
+        }
+
+
+        private async Task Play()
+        {
+            Thread crossfade = new Thread(PlayNext);
+            if (checkBox1.Checked) { repeat = true; }
+            else { repeat = false; }
+
+            stream = Bass.BASS_StreamCreateFile(listBox1.Items[0].ToString(), 0, 0, BASSFlag.BASS_STREAM_AUTOFREE);
+
+            Bass.BASS_ChannelPlay(stream, repeat);
+            while (Bass.BASS_ChannelIsActive(stream) == BASSActive.BASS_ACTIVE_PLAYING)
+            {
+                if (GetRemainingMilliseconds(stream) == crossfadeTimeInMs) {
+
+                    crossfade.Start();
+                    Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0, crossfadeTimeInMs); // fade-out
+                }
+            }
+
+
+
+        }
+        private void PlayNext() {
+            stream = Bass.BASS_StreamCreateFile(listBox1.Items[1].ToString(), 0, 0, BASSFlag.BASS_STREAM_AUTOFREE); // create next stream
+            Bass.BASS_ChannelSetAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0); // settings its volume to 0
+            Bass.BASS_ChannelPlay(stream, repeat); // play next stream
+            Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 1, crossfadeTimeInMs); // fadein
+        }
+        private void Next()
         {
             Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0, fadeNextTimeInMs);
             stream = Bass.BASS_StreamCreateFile(listBox1.Items[1].ToString(), 0, 0, BASSFlag.BASS_STREAM_AUTOFREE);
             Bass.BASS_ChannelSetAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 0);
             Bass.BASS_ChannelSlideAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, 1, 1500);
             Bass.BASS_ChannelPlay(stream, repeat);
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Next();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -95,7 +132,9 @@ namespace DemoMixer
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
+            // fix up - workaround needed
             //pauseFadeTimeInMs = (int)numericUpDown1.Value * 1000;
+
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
