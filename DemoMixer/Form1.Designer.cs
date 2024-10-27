@@ -52,7 +52,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(467, 82);
+            button1.Location = new Point(12, 137);
             button1.Name = "button1";
             button1.Size = new Size(218, 23);
             button1.TabIndex = 0;
@@ -66,7 +66,7 @@
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(12, 82);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(449, 379);
+            listBox1.Size = new Size(535, 49);
             listBox1.TabIndex = 1;
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
@@ -82,7 +82,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(467, 121);
+            button2.Location = new Point(12, 176);
             button2.Name = "button2";
             button2.Size = new Size(218, 23);
             button2.TabIndex = 3;
@@ -92,7 +92,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(467, 159);
+            button3.Location = new Point(12, 214);
             button3.Name = "button3";
             button3.Size = new Size(218, 23);
             button3.TabIndex = 5;
@@ -102,7 +102,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(467, 197);
+            button4.Location = new Point(12, 252);
             button4.Name = "button4";
             button4.Size = new Size(218, 23);
             button4.TabIndex = 4;
@@ -112,7 +112,7 @@
             // 
             // button5
             // 
-            button5.Location = new Point(467, 235);
+            button5.Location = new Point(12, 290);
             button5.Name = "button5";
             button5.Size = new Size(218, 23);
             button5.TabIndex = 6;
@@ -123,7 +123,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(467, 277);
+            checkBox1.Location = new Point(249, 153);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(168, 19);
             checkBox1.TabIndex = 9;
@@ -134,9 +134,9 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
-            statusStrip1.Location = new Point(0, 489);
+            statusStrip1.Location = new Point(0, 321);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(846, 22);
+            statusStrip1.Size = new Size(563, 22);
             statusStrip1.TabIndex = 10;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -149,15 +149,15 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(467, 402);
+            label3.Location = new Point(249, 252);
             label3.Name = "label3";
-            label3.Size = new Size(213, 15);
+            label3.Size = new Size(212, 15);
             label3.TabIndex = 12;
             label3.Text = "Fade to next fade duration (in seconds)";
             // 
             // numericUpDown2
             // 
-            numericUpDown2.Location = new Point(729, 355);
+            numericUpDown2.Location = new Point(511, 205);
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new Size(36, 23);
             numericUpDown2.TabIndex = 11;
@@ -167,7 +167,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(467, 363);
+            label4.Location = new Point(249, 213);
             label4.Name = "label4";
             label4.Size = new Size(256, 15);
             label4.TabIndex = 14;
@@ -175,7 +175,7 @@
             // 
             // numericUpDown3
             // 
-            numericUpDown3.Location = new Point(713, 394);
+            numericUpDown3.Location = new Point(511, 244);
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new Size(36, 23);
             numericUpDown3.TabIndex = 13;
@@ -184,7 +184,7 @@
             // 
             // numericUpDown4
             // 
-            numericUpDown4.Location = new Point(713, 434);
+            numericUpDown4.Location = new Point(511, 284);
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.Size = new Size(36, 23);
             numericUpDown4.TabIndex = 16;
@@ -194,7 +194,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(467, 442);
+            label5.Location = new Point(249, 292);
             label5.Name = "label5";
             label5.Size = new Size(198, 15);
             label5.TabIndex = 15;
@@ -204,7 +204,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(846, 511);
+            ClientSize = new Size(563, 343);
             Controls.Add(numericUpDown4);
             Controls.Add(label5);
             Controls.Add(label4);
