@@ -16,7 +16,7 @@ namespace DemoMixer
         {
             try
             {
-                if (!Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_STEREO, nint.Zero)) ;
+                if (!Bass.BASS_Init(-1, 44100, flags: BASSInit.BASS_DEVICE_STEREO | BASSInit.BASS_DEVICE_DSOUND, nint.Zero)) ;
                 {
 
                     MessageBox.Show(Bass.BASS_ErrorGetCode().ToString());
